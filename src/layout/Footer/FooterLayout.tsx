@@ -1,12 +1,12 @@
 import React from "react";
 // import svg from "../assets/svg";
-import { ReactComponent as Facebook } from "../assets/svg/facebook.svg";
-import { ReactComponent as Tiktok } from "../assets/svg/tiktok.svg";
-import { ReactComponent as Instagram } from "../assets/svg/instagram.svg";
-import { ReactComponent as FooterLogo } from "../assets/svg/footer-logo.svg";
-import { ReactComponent as Phone } from "../assets/svg/phone.svg";
-import { ReactComponent as Location } from "../assets/svg/location.svg";
-import { ReactComponent as OzipLogo } from "../assets/svg/ozip-logo.svg";
+import { ReactComponent as Facebook } from "../../assets/svg/facebook.svg";
+import { ReactComponent as Tiktok } from "../../assets/svg/tiktok.svg";
+import { ReactComponent as Instagram } from "../../assets/svg/instagram.svg";
+import { ReactComponent as FooterLogo } from "../../assets/svg/footer-logo.svg";
+import { ReactComponent as Phone } from "../../assets/svg/phone.svg";
+import { ReactComponent as Location } from "../../assets/svg/location.svg";
+import { ReactComponent as OzipLogo } from "../../assets/svg/ozip-logo.svg";
 
 const FooterLayout = () => {
   return (
