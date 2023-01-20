@@ -1,8 +1,12 @@
 import React from "react";
-import "./App.css";
+import FooterLayout from "./layout/FooterLayout";
 
 function App() {
-  return <h1 className="text-xl font-bold underline">Hello world!</h1>;
+  return (
+    <div className="h-screen w-full">
+      <FooterLayout />
+    </div>
+  );
 }
 
 export default App;
