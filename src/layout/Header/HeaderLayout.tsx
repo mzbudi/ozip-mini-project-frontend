@@ -8,7 +8,7 @@ import { ReactComponent as Cart } from "../../assets/svg/cart.svg";
 const HeaderLayout = () => {
   return (
     <header className="relative">
-      <nav className="bg-white border-gray-200 px-4 lg:px-9 py-12 dark:bg-gray-800">
+      <nav className="bg-white border-gray-200 px-4 lg:px-9 py-12 dark:bg-gray-800 shadow-md">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <a href="https://flowbite.com" className="flex items-center">
             <HeaderLogo />

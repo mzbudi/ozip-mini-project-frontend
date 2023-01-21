@@ -9,6 +9,8 @@ module.exports = {
       },
       colors: {
         primary: "#1E1E1E",
+        price: "#FF0000",
+        price_inactive: "#777777",
       },
     },
   },
