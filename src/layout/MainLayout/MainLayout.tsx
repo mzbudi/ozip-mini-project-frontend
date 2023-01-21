@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import product from "../../assets/img/product.png";
 import Breadcrumb from "./components/Breadcrumb";
-import SecondaryImages from "./components/SecondaryImages";
+import ImageCarousel from "./components/ImageCarousel";
 
 import { ReactComponent as Rating } from "../../assets/svg/rating.svg";
 import { ReactComponent as EmptyRating } from "../../assets/svg/empty-rating.svg";
@@ -16,6 +15,7 @@ const colorList: string[] = ["#3C3A49", "#843535"];
 const MainLayout: React.FC = () => {
   const [qty, setQty] = useState<number>(0);
   const [size, setSize] = useState<string>("");
+  const [color, setColor] = useState<string>("");
 
   const ratingGenerator = (rating: number) => {
     const ratingArray = [];
@@ -51,25 +51,28 @@ const MainLayout: React.FC = () => {
     });
   };
 
-  const colorGenerator = (color: string[]) => {
-    return color.map((item) => {
+  const colorGenerator = (colorList: string[]) => {
+    return colorList.map((item) => {
       const bgColor = "bg-[" + item + "]";
 
       return (
         <div
           key={item}
-          className="flex flex-col items-center mr-6 box-border border-solid border-[1px] border-black "
+          className={`${
+            item === color ? "border-4" : "border-[1px]"
+          } flex flex-col items-center mr-6 box-border border-solid border-black `}
+          style={{ backgroundColor: item }}
         >
-          <button className={`${bgColor} w-[89px] h-[89px]`}>{""}</button>
+          <button
+            className={`${bgColor} w-[89px] h-[89px]`}
+            onClick={() => {
+              setColor(item);
+            }}
+          >
+            {""}
+          </button>
         </div>
       );
-    });
-  };
-
-  const secondaryImageRender = (image: string) => {
-    const data = Array(3).fill(image);
-    return data.map((item, index) => {
-      return <SecondaryImages product={item} key={index} />;
     });
   };
 
@@ -90,21 +93,14 @@ const MainLayout: React.FC = () => {
   };
 
   const addToCart = () => {
-    console.log("Add to cart", qty, size);
+    console.log("Add to cart", qty, size, color);
   };
 
   return (
     <div className="flex flex-col mx-[50px] my-10">
       <Breadcrumb />
       <div className="grid gap-16 grid-flow-col mt-[21.8px]">
-        <div className="flex flex-col">
-          <div className="w-[692px] h-[954px] bg-[#F8F8F8] flex justify-center mr-5">
-            <img src={product} alt="product" className="object-center" />
-          </div>
-          <div className="flex flex-row mt-10">
-            {secondaryImageRender(product)}
-          </div>
-        </div>
+        <ImageCarousel />
         <div className="flex flex-col">
           {/* Title */}
           <p className="font-radio_canada font-semibold text-[40px] leading-10">
