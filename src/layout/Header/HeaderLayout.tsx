@@ -28,26 +28,28 @@ const HeaderLayout = () => {
               Sale
             </span>
           </a>
-          <button>
-            <span>
-              <Search />
-            </span>
-          </button>
-          <button>
-            <span>
-              <Profile />
-            </span>
-          </button>
-          <button>
-            <span>
-              <Love />
-            </span>
-          </button>
-          <button>
-            <span>
-              <Cart />
-            </span>
-          </button>
+          <div className="flex space-x-12">
+            <button>
+              <span>
+                <Search />
+              </span>
+            </button>
+            <button>
+              <span>
+                <Profile />
+              </span>
+            </button>
+            <button>
+              <span>
+                <Love />
+              </span>
+            </button>
+            <button>
+              <span>
+                <Cart />
+              </span>
+            </button>
+          </div>
         </div>
       </nav>
     </header>
