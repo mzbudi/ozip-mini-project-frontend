@@ -1,35 +1,49 @@
-import React from "react";
-import product from "../assets/img/product.png";
-import { ReactComponent as Rating } from "../assets/svg/rating.svg";
-import { ReactComponent as EmptyRating } from "../assets/svg/empty-rating.svg";
-import { ReactComponent as LoveCart } from "../assets/svg/love-cart.svg";
-import { ReactComponent as FacebookCart } from "../assets/svg/facebook-cart.svg";
-import { ReactComponent as TwitterCart } from "../assets/svg/twitter-cart.svg";
-import { ReactComponent as InstagramCart } from "../assets/svg/instagram-cart.svg";
+import React, { useState } from "react";
+import product from "../../assets/img/product.png";
+import Breadcrumb from "./components/Breadcrumb";
+import SecondaryImages from "./components/SecondaryImages";
 
-const size: string[] = ["S", "M", "L", "XL", "XXL"];
-const color: string[] = ["#3C3A49", "#843535"];
+import { ReactComponent as Rating } from "../../assets/svg/rating.svg";
+import { ReactComponent as EmptyRating } from "../../assets/svg/empty-rating.svg";
+import { ReactComponent as LoveCart } from "../../assets/svg/love-cart.svg";
+import { ReactComponent as FacebookCart } from "../../assets/svg/facebook-cart.svg";
+import { ReactComponent as TwitterCart } from "../../assets/svg/twitter-cart.svg";
+import { ReactComponent as InstagramCart } from "../../assets/svg/instagram-cart.svg";
 
-const MainLayout = () => {
+const sizeList: string[] = ["S", "M", "L", "XL", "XXL"];
+const colorList: string[] = ["#3C3A49", "#843535"];
+
+const MainLayout: React.FC = () => {
+  const [qty, setQty] = useState<number>(0);
+  const [size, setSize] = useState<string>("");
+
   const ratingGenerator = (rating: number) => {
     const ratingArray = [];
     for (let i = 0; i < rating; i++) {
       ratingArray.push(<Rating key={i} />);
     }
     for (let i = 0; i < 5 - rating; i++) {
-      ratingArray.push(<EmptyRating key={5 - rating + i} />);
+      ratingArray.push(<EmptyRating key={i + rating} />);
     }
     return ratingArray;
   };
 
-  const sizeGenerator = (size: string[]) => {
-    return size.map((item, index) => {
+  const sizeGenerator = (sizeList: string[]) => {
+    return sizeList.map((item, index) => {
+      let compare: string = item;
       return (
         <div
           key={index}
-          className="flex flex-col items-center mr-6 box-border border-solid border-[1px] border-black "
+          className={` ${
+            size === compare ? "border-4" : "border-2"
+          } flex flex-col items-center mr-6 box-border border-solid border-[1px] border-black`}
         >
-          <button className="w-[89px] h-[89px] bg-white flex justify-center items-center">
+          <button
+            onClick={() => {
+              setSize(item);
+            }}
+            className="w-[89px] h-[89px] bg-white flex justify-center items-center"
+          >
             <p className="font-roboto font-medium text-[28px]">{item}</p>
           </button>
         </div>
@@ -52,56 +66,43 @@ const MainLayout = () => {
     });
   };
 
+  const secondaryImageRender = (image: string) => {
+    const data = Array(3).fill(image);
+    return data.map((item, index) => {
+      return <SecondaryImages product={item} key={index} />;
+    });
+  };
+
+  const handleQtyBtn = (type: string) => {
+    if (type === "plus") {
+      setQty(qty + 1);
+    } else {
+      if (qty > 0) {
+        setQty(qty - 1);
+      }
+    }
+  };
+
+  const handleQtyInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value !== "" && !isNaN(Number(e.target.value))) {
+      setQty(Number(e.target.value));
+    }
+  };
+
+  const addToCart = () => {
+    console.log("Add to cart", qty, size);
+  };
+
   return (
     <div className="flex flex-col mx-[50px] my-10">
-      <nav className="rounded-md">
-        <ol className="list-none flex">
-          <li>
-            <a
-              href="#"
-              className="font-roboto font-normal text-[26px] text-primary"
-            >
-              GAYALO
-            </a>
-          </li>
-          <li>
-            <span className="font-roboto font-normal text-[26px] text-primary mx-2">
-              /
-            </span>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="font-roboto font-normal text-[26px] text-primary"
-            >
-              Katalog
-            </a>
-          </li>
-          <li>
-            <span className="font-roboto font-normal text-[26px] text-primary mx-2">
-              /
-            </span>
-          </li>
-          <li className="font-roboto font-medium text-[26px] text-primary">
-            Nama Product
-          </li>
-        </ol>
-      </nav>
+      <Breadcrumb />
       <div className="grid gap-16 grid-flow-col mt-[21.8px]">
         <div className="flex flex-col">
           <div className="w-[692px] h-[954px] bg-[#F8F8F8] flex justify-center mr-5">
             <img src={product} alt="product" className="object-center" />
           </div>
           <div className="flex flex-row mt-10">
-            <div className="w-[220px] h-[220px] bg-[#F8F8F8] flex justify-center mr-[17px]">
-              <img src={product} alt="product" className="object-center" />
-            </div>
-            <div className="w-[220px] h-[220px] bg-[#F8F8F8] flex justify-center mr-[17px]">
-              <img src={product} alt="product" className="object-center" />
-            </div>
-            <div className="w-[220px] h-[220px] bg-[#F8F8F8] flex justify-center mr-[17px]">
-              <img src={product} alt="product" className="object-center" />
-            </div>
+            {secondaryImageRender(product)}
           </div>
         </div>
         <div className="flex flex-col">
@@ -138,7 +139,9 @@ const MainLayout = () => {
             <p className="font-roboto font-normal text-[28px] leading-[32.81px]">
               Ukuran
             </p>
-            <div className="flex flex-row mt-[10px]">{sizeGenerator(size)}</div>
+            <div className="flex flex-row mt-[10px]">
+              {sizeGenerator(sizeList)}
+            </div>
           </div>
           {/* Color */}
           <div className="mt-[40px]">
@@ -146,7 +149,7 @@ const MainLayout = () => {
               Warna
             </p>
             <div className="flex flex-row mt-[10px]">
-              {colorGenerator(color)}
+              {colorGenerator(colorList)}
             </div>
           </div>
           {/* Quantity */}
@@ -156,7 +159,12 @@ const MainLayout = () => {
             </p>
             <div className="flex flex-row mt-[10px]">
               <div className="flex flex-col items-center mr-6 box-border border-solid border-[1px] border-black ">
-                <button className="w-[89px] h-[89px] bg-white flex justify-center items-center">
+                <button
+                  className="w-[89px] h-[89px] bg-white flex justify-center items-center"
+                  onClick={() => {
+                    handleQtyBtn("minus");
+                  }}
+                >
                   <p className="font-roboto font-medium text-4xl max-w-[202px]">
                     -
                   </p>
@@ -166,12 +174,20 @@ const MainLayout = () => {
                 <input
                   type="text"
                   placeholder="1"
-                  defaultValue={1}
+                  value={qty}
                   className="h-[89px] bg-white flex justify-center items-center text-center font-roboto font-medium text-4xl max-w-[202px]"
+                  onChange={(e) => {
+                    handleQtyInput(e);
+                  }}
                 />
               </div>
               <div className="flex flex-col items-center mr-6 box-border border-solid border-[1px] border-black ">
-                <button className="w-[89px] h-[89px] bg-white flex justify-center items-center">
+                <button
+                  className="w-[89px] h-[89px] bg-white flex justify-center items-center"
+                  onClick={() => {
+                    handleQtyBtn("plus");
+                  }}
+                >
                   <p className="font-roboto font-medium text-4xl max-w-[202px]">
                     +
                   </p>
@@ -183,7 +199,12 @@ const MainLayout = () => {
             </p>
           </div>
           {/* Cart */}
-          <button className="bg-primary font-roboto font-semibold text-[28px] text-center text-white mt-10 pt-[34px] pb-[33px]">
+          <button
+            onClick={() => {
+              addToCart();
+            }}
+            className="bg-primary font-roboto font-semibold text-[28px] text-center text-white mt-10 pt-[34px] pb-[33px]"
+          >
             MASUKAN KERANJANG
           </button>
           {/* Social Media */}

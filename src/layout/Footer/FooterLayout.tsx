@@ -8,7 +8,7 @@ import { ReactComponent as Phone } from "../../assets/svg/phone.svg";
 import { ReactComponent as Location } from "../../assets/svg/location.svg";
 import { ReactComponent as OzipLogo } from "../../assets/svg/ozip-logo.svg";
 
-const FooterLayout = () => {
+const FooterLayout: React.FC = () => {
   return (
     <footer className="w-full">
       <div className="bg-primary p-0 flex flex-col h-[505px] pt-20 pl-[53px] pr-[54px] pb-10">

@@ -1,7 +1,7 @@
 import React from "react";
 import FooterLayout from "./layout/Footer/FooterLayout";
 import HeaderLayout from "./layout/Header/HeaderLayout";
-import MainLayout from "./layout/MainLayout";
+import MainLayout from "./layout/MainLayout/MainLayout";
 
 function App() {
   return (

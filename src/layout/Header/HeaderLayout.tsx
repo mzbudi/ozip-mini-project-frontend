@@ -5,7 +5,7 @@ import { ReactComponent as Love } from "../../assets/svg/love.svg";
 import { ReactComponent as Profile } from "../../assets/svg/profile.svg";
 import { ReactComponent as Cart } from "../../assets/svg/cart.svg";
 
-const HeaderLayout = () => {
+const HeaderLayout: React.FC = () => {
   return (
     <header className="relative">
       <nav className="bg-white border-gray-200 px-4 lg:px-9 py-12 dark:bg-gray-800 shadow-md">
