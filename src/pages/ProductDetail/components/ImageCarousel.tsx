@@ -1,12 +1,22 @@
 import React, { useState } from "react";
-
-import SecondaryImages from "./SecondaryImages";
-
 import product from "../../../assets/img/product.png";
 import product2 from "../../../assets/img/product2.jpeg";
 
 import { ReactComponent as SlideLeft } from "../../../assets/svg/slide-left.svg";
 import { ReactComponent as SlideRight } from "../../../assets/svg/slide-right.svg";
+
+
+interface SecondaryImagesProps {
+  product: string;
+}
+
+const SecondaryImages: React.FC<SecondaryImagesProps> = ({ product }) => {
+  return (
+    <div className="w-[220px] h-[220px] bg-[#F8F8F8] flex justify-center mr-[17px]">
+      <img src={product} alt="product" className="object-center" />
+    </div>
+  );
+};
 
 const imageList = [product, product2, product, product2];
 
@@ -65,5 +75,6 @@ const ImageCarousel: React.FC = () => {
     </div>
   );
 };
+
 
 export default ImageCarousel;

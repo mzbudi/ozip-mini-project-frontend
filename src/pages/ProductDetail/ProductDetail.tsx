@@ -1,18 +1,17 @@
 import React, { useState } from "react";
+
 import Breadcrumb from "./components/Breadcrumb";
 import ImageCarousel from "./components/ImageCarousel";
+import SocialMediaList from "./components/SocialMediaList";
+import BreadcrumbOutlet from "./components/BreadcrumbOutlet";
 
 import { ReactComponent as Rating } from "../../assets/svg/rating.svg";
 import { ReactComponent as EmptyRating } from "../../assets/svg/empty-rating.svg";
-import { ReactComponent as LoveCart } from "../../assets/svg/love-cart.svg";
-import { ReactComponent as FacebookCart } from "../../assets/svg/facebook-cart.svg";
-import { ReactComponent as TwitterCart } from "../../assets/svg/twitter-cart.svg";
-import { ReactComponent as InstagramCart } from "../../assets/svg/instagram-cart.svg";
 
 const sizeList: string[] = ["S", "M", "L", "XL", "XXL"];
 const colorList: string[] = ["#3C3A49", "#843535"];
 
-const MainLayout: React.FC = () => {
+const ProductDetail: React.FC = () => {
   const [qty, setQty] = useState<number>(0);
   const [size, setSize] = useState<string>("");
   const [color, setColor] = useState<string>("");
@@ -204,65 +203,12 @@ const MainLayout: React.FC = () => {
             MASUKAN KERANJANG
           </button>
           {/* Social Media */}
-          <div className="flex flex-row mt-10">
-            <button className="mr-[60px]">
-              <LoveCart />
-            </button>
-            <button className="mr-[60px]">
-              <FacebookCart />
-            </button>
-            <button className="mr-[60px]">
-              <TwitterCart />
-            </button>
-            <button className="mr-[60px]">
-              <InstagramCart />
-            </button>
-          </div>
+          <SocialMediaList />
         </div>
       </div>
-      <div className="mt-[100px] flex justify-center">
-        <ol className="list-none flex space-x-12">
-          <li>
-            <a
-              href="/"
-              className="font-roboto font-black text-3xl leading-[35.16px] text-primary"
-            >
-              Deskripsi
-            </a>
-          </li>
-          <li>
-            <span className="font-roboto font-medium text-[26px] text-primary">
-              /
-            </span>
-          </li>
-          <li>
-            <a
-              href="/"
-              className="font-roboto font-medium text-3xl text-primary"
-            >
-              Customer Reviews
-            </a>
-          </li>
-          <li>
-            <span className="font-roboto font-medium text-3xl text-primary">
-              /
-            </span>
-          </li>
-          <li className="font-roboto font-medium text-3xl text-primary">
-            Shipping & Returns
-          </li>
-        </ol>
-      </div>
-      <div className="mt-10">
-        <p className="font-roboto font-normal text-[28px] text-justify">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Adipisci
-          necessitatibus excepturi commodi amet aut quia dolor doloribus sunt
-          suscipit harum. Laudantium cumque iusto natus dolores sapiente labore
-          iste, molestias eaque.
-        </p>
-      </div>
+      <BreadcrumbOutlet />
     </div>
   );
 };
 
-export default MainLayout;
+export default ProductDetail;
