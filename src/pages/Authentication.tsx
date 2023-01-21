@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
 
-// import Modal from "../components/Modal";
+import Modal from "../components/Modal";
 
 const Authentication: React.FC = () => {
-  //   const dispatch = useDispatch();
-
   const [email, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [registEmail, setRegistEmail] = useState("");
   const [registPassword, setRegistPassword] = useState("");
   const [name, setName] = useState("");
   const [currentLayout, setCurrentLayout] = useState("login");
+  const [isOpen, setIsOpen] = useState(false);
+  const [errorType, setErrorType] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -31,6 +31,14 @@ const Authentication: React.FC = () => {
 
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+  };
+
+  const handleLogin = () => {
+    if (email === "" || password === "") {
+      setErrorType("Error Login");
+      setErrorMessage("Please fill all the field");
+      setIsOpen(true);
+    }
   };
 
   return (
@@ -59,7 +67,7 @@ const Authentication: React.FC = () => {
             className="w-full border-2 border-[#E0E0E0] focus:outline-primary focus:caret-primary active:outline-borderPrimary rounded-lg px-4 py-2 mt-2 text-xs leading-5 opacity-50"
           />
           <button
-            onClick={() => {}}
+            onClick={handleLogin}
             className="flex flex-row justify-center ml-[5px] rounded-md shadow-sm border border-borderPrimary bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-borderPrimary focus:outline-none focus-visible:ring-2 focus-visible:ring-borderPrimary focus-visible:ring-offset-2"
           >
             Login
@@ -120,6 +128,12 @@ const Authentication: React.FC = () => {
           </button>
         </div>
       </div>
+      <Modal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        errorType={errorType}
+        message={errorMessage}
+      />
     </div>
   );
 };
