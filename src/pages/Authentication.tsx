@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useNavigate } from "react-router-dom";
 import {
   login,
   register,
@@ -22,6 +23,7 @@ const Authentication: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const auth = useAppSelector(selectAuth);
+  const navigate = useNavigate();
 
   console.log(auth);
 
@@ -31,7 +33,10 @@ const Authentication: React.FC = () => {
       setErrorMessage(auth.error);
       setIsOpen(true);
     }
-  }, [auth.error]);
+    if (auth.isLogged === true) {
+      navigate("/");
+    }
+  }, [auth.error, auth.isLogged, navigate]);
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);

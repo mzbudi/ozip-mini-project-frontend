@@ -3,7 +3,7 @@ import { loginUser, registerUser } from "./api/authApi";
 import { RootState } from "../app/store";
 
 const initialState = {
-  value: { auth_token: "", error: "" },
+  value: { auth_token: "", error: "", isLogged: false },
   status: "idle",
 };
 
@@ -38,7 +38,7 @@ export const authSlice = createSlice({
       state.value = { ...state.value, error: "" };
     },
     resetAuth: (state) => {
-      state.value = { auth_token: "", error: "" };
+      state.value = { ...state.value, auth_token: "", error: "" };
     },
   },
   extraReducers: (builder) => {
@@ -48,7 +48,7 @@ export const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = "idle";
-        state.value = { ...action.payload, error: "" };
+        state.value = { ...action.payload, error: "", isLogged: true };
       })
       .addCase(login.rejected, (state) => {
         state.status = "err";
