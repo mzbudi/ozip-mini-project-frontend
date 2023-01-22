@@ -1,4 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import {
+  login,
+  register,
+  selectAuth,
+  closeErrorModal,
+} from "../slices/authSlices";
 
 import Modal from "../components/Modal";
 
@@ -12,6 +19,19 @@ const Authentication: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [errorType, setErrorType] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const dispatch = useAppDispatch();
+  const auth = useAppSelector(selectAuth);
+
+  console.log(auth);
+
+  useEffect(() => {
+    if (auth.error !== "") {
+      setErrorType("Error Login");
+      setErrorMessage(auth.error);
+      setIsOpen(true);
+    }
+  }, [auth.error]);
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -39,6 +59,12 @@ const Authentication: React.FC = () => {
       setErrorMessage("Please fill all the field");
       setIsOpen(true);
     }
+    dispatch(login({ email, password }));
+  };
+
+  const handleCloseModal = (status: boolean) => {
+    setIsOpen(status);
+    dispatch(closeErrorModal());
   };
 
   return (
@@ -130,7 +156,7 @@ const Authentication: React.FC = () => {
       </div>
       <Modal
         isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        setIsOpen={() => handleCloseModal(false)}
         errorType={errorType}
         message={errorMessage}
       />

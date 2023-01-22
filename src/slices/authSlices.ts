@@ -37,6 +37,9 @@ export const authSlice = createSlice({
     closeErrorModal: (state) => {
       state.value = { ...state.value, error: "" };
     },
+    resetAuth: (state) => {
+      state.value = { auth_token: "", error: "" };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -49,7 +52,11 @@ export const authSlice = createSlice({
       })
       .addCase(login.rejected, (state) => {
         state.status = "err";
-        state.value = { ...state.value, error: "Invalid email or password" };
+        state.value = {
+          ...state.value,
+          auth_token: "",
+          error: "Invalid email or password",
+        };
       })
       .addCase(register.pending, (state) => {
         state.status = "loading";
