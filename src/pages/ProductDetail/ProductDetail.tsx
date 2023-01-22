@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { addCart, selectCart } from "../../slices/cartSlices";
 
 import Breadcrumb from "./components/Breadcrumb";
 import ImageCarousel from "./components/ImageCarousel";
@@ -11,10 +13,22 @@ import { ReactComponent as EmptyRating } from "../../assets/svg/empty-rating.svg
 const sizeList: string[] = ["S", "M", "L", "XL", "XXL"];
 const colorList: string[] = ["#3C3A49", "#843535"];
 
+interface CartValue {
+  id: string;
+  size: string;
+  color: string;
+  qty: number;
+  price: number;
+  name: string;
+}
+
 const ProductDetail: React.FC = () => {
   const [qty, setQty] = useState<number>(0);
   const [size, setSize] = useState<string>("");
   const [color, setColor] = useState<string>("");
+
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector(selectCart);
 
   const ratingGenerator = (rating: number) => {
     const ratingArray = [];
@@ -35,7 +49,7 @@ const ProductDetail: React.FC = () => {
           key={index}
           className={` ${
             size === compare ? "border-4" : "border-2"
-          } flex flex-col items-center mr-6 box-border border-solid border-[1px] border-black`}
+          } flex flex-col items-center mr-6 box-border border-solid border-black`}
         >
           <button
             onClick={() => {
@@ -92,7 +106,15 @@ const ProductDetail: React.FC = () => {
   };
 
   const addToCart = () => {
-    console.log("Add to cart", qty, size, color);
+    const newCartValue= {
+      id: Math.random().toString(36),
+      size: size,
+      color: color,
+      qty: qty,
+      price: 70000,
+      name: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    };
+    dispatch(addCart(newCartValue));
   };
 
   return (
