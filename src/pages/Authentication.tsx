@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useNavigate } from "react-router-dom";
-import { login, selectAuth, closeErrorModal } from "../slices/authSlices";
+import { login, register, selectAuth, closeModal } from "../slices/authSlices";
 
 import Modal from "../components/Modal";
 
 const Authentication: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [registEmail, setRegistEmail] = useState("");
   const [registPassword, setRegistPassword] = useState("");
-  const [name, setName] = useState("");
+  const [registUsername, setRegistUsername] = useState("");
   const [currentLayout, setCurrentLayout] = useState("login");
   const [isOpen, setIsOpen] = useState(false);
-  const [errorType, setErrorType] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const [message, setMessage] = useState("");
 
   const dispatch = useAppDispatch();
   const auth = useAppSelector(selectAuth);
@@ -22,14 +21,22 @@ const Authentication: React.FC = () => {
 
   useEffect(() => {
     if (auth.error !== "") {
-      setErrorType("Error Login");
-      setErrorMessage(auth.error);
+      setMessageType("Error");
+      setMessage(auth.error);
       setIsOpen(true);
+    }
+    if (auth.success !== "") {
+      setMessageType("Success");
+      setMessage(auth.success);
+      setIsOpen(true);
+      setRegistUsername("");
+      setRegistPassword("");
+      setCurrentLayout("login");
     }
     if (auth.isLogged === true) {
       navigate("/");
     }
-  }, [auth.error, auth.isLogged, navigate]);
+  }, [auth.error, auth.isLogged, auth.success, navigate]);
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -40,29 +47,40 @@ const Authentication: React.FC = () => {
   };
 
   const handleRegistUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRegistEmail(e.target.value);
+    setRegistUsername(e.target.value);
   };
 
   const handleRegistPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRegistPassword(e.target.value);
   };
 
-  const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+  const handleLogin = () => {
+    if (currentLayout === "login") {
+      if (username === "" || password === "") {
+        setMessageType("Error Login");
+        setMessage("Please fill all the field");
+        setIsOpen(true);
+      }
+      dispatch(login({ username, password }));
+    }
   };
 
-  const handleLogin = () => {
-    if (username === "" || password === "") {
-      setErrorType("Error Login");
-      setErrorMessage("Please fill all the field");
-      setIsOpen(true);
+  const handleRegister = () => {
+    if (currentLayout === "register") {
+      if (registUsername === "" || registPassword === "") {
+        setMessageType("Error Register");
+        setMessage("Please fill all the field");
+        setIsOpen(true);
+      }
+      dispatch(
+        register({ username: registUsername, password: registPassword })
+      );
     }
-    dispatch(login({ username, password }));
   };
 
   const handleCloseModal = (status: boolean) => {
     setIsOpen(status);
-    dispatch(closeErrorModal());
+    dispatch(closeModal());
   };
 
   return (
@@ -117,15 +135,8 @@ const Authentication: React.FC = () => {
           <p className="font-nunito text-primary">Register Ozip Mini Project</p>
           <input
             type="text"
-            placeholder="Name"
-            value={name}
-            onChange={handleName}
-            className="w-full border-2 border-[#E0E0E0] focus:outline-primary focus:caret-primary active:outline-borderPrimary rounded-lg px-4 py-2 mt-2 text-xs leading-5 opacity-50"
-          />
-          <input
-            type="text"
             placeholder="Username"
-            value={registEmail}
+            value={registUsername}
             onChange={handleRegistUsername}
             className="w-full border-2 border-[#E0E0E0] focus:outline-primary focus:caret-primary active:outline-borderPrimary rounded-lg px-4 py-2 mt-2 text-xs leading-5 opacity-50"
           />
@@ -138,7 +149,9 @@ const Authentication: React.FC = () => {
           />
 
           <button
-            onClick={() => {}}
+            onClick={() => {
+              handleRegister();
+            }}
             className="flex flex-row justify-center ml-[5px] rounded-md shadow-sm border border-borderPrimary bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-borderPrimary focus:outline-none focus-visible:ring-2 focus-visible:ring-borderPrimary focus-visible:ring-offset-2"
           >
             Register
@@ -155,8 +168,8 @@ const Authentication: React.FC = () => {
       <Modal
         isOpen={isOpen}
         setIsOpen={() => handleCloseModal(false)}
-        errorType={errorType}
-        message={errorMessage}
+        errorType={messageType}
+        message={message}
       />
     </div>
   );

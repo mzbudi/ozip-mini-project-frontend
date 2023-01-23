@@ -13,16 +13,16 @@ export function loginUser({
   });
 }
 
-export function registerUser(data: {
-  name: string;
-  email: string;
+export function registerUser({
+  username,
+  password,
+}: {
+  username: string;
   password: string;
-  password_confirmation: string;
 }) {
-  return axios.post("https://todo-api-18-140-52-65.rakamin.com/signup", {
-    name: data.name,
-    email: data.email,
-    password: data.password,
-    password_confirmation: data.password_confirmation,
+  console.log(username, password);
+  return axios.post("http://127.0.0.1:3001/users/signup", {
+    username: username,
+    password: password,
   });
 }

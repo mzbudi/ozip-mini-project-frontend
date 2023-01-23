@@ -24,7 +24,7 @@ const Header: React.FC = () => {
     <header className="relative">
       <nav className="bg-white border-gray-200 px-4 lg:px-9 py-12 dark:bg-gray-800 shadow-md">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-          <a href="https://flowbite.com" className="flex items-center">
+          <a href="/" className="flex items-center">
             <HeaderLogo />
           </a>
           <a href="/">
@@ -59,7 +59,6 @@ const Header: React.FC = () => {
               </span>
             </button>
             <button className="relative">
-              {/* hidden if cart empty */}
               <span
                 className={`${
                   totalCart === 0 ? "hidden" : ""

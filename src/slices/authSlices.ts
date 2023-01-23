@@ -3,7 +3,7 @@ import { loginUser, registerUser } from "./api/authApi";
 import { RootState } from "../app/store";
 
 const initialState = {
-  value: { access_token: "", error: "", isLogged: false },
+  value: { access_token: "", error: "", success: "", isLogged: false },
   status: "idle",
 };
 
@@ -18,13 +18,8 @@ export const login = createAsyncThunk(
 
 export const register = createAsyncThunk(
   "auth/register",
-  async (data: {
-    name: string;
-    email: string;
-    password: string;
-    password_confirmation: string;
-  }) => {
-    const response = await registerUser(data);
+  async ({ username, password }: { username: string; password: string }) => {
+    const response = await registerUser({ username, password });
     localStorage.setItem("access_token", response.data.access_token);
     return response.data;
   }
@@ -34,48 +29,57 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    closeErrorModal: (state) => {
-      state.value = { ...state.value, error: "" };
+    closeModal: (state) => {
+      state.value = { ...state.value, error: "", success: "" };
     },
     resetAuth: (state) => {
-      state.value = { ...state.value, access_token: "", error: "" };
+      state.value = {
+        ...state.value,
+        access_token: "",
+        error: "",
+        success: "",
+        isLogged: false,
+      };
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(login.pending, (state) => {
-        state.status = "loading";
-      })
       .addCase(login.fulfilled, (state, action) => {
         state.status = "idle";
-        state.value = { ...action.payload, error: "", isLogged: true };
+        state.value = {
+          ...action.payload,
+          error: "",
+          isLogged: true,
+          success: "",
+        };
       })
       .addCase(login.rejected, (state) => {
-        state.status = "err";
+        state.status = "error";
         state.value = {
           ...state.value,
           access_token: "",
           error: "Invalid email or password",
         };
       })
-      .addCase(register.pending, (state) => {
-        state.status = "loading";
-      })
       .addCase(register.fulfilled, (state, action) => {
         state.status = "idle";
-        state.value = { ...action.payload, error: "" };
+        state.value = {
+          ...action.payload,
+          error: "",
+          success: "Account created successfully",
+        };
       })
       .addCase(register.rejected, (state) => {
-        state.status = "err";
+        state.status = "error";
         state.value = {
           ...state.value,
-          error: "Error or Email Already in Use",
+          error: "Email already exists",
         };
       });
   },
 });
 
-export const { closeErrorModal } = authSlice.actions;
+export const { closeModal } = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth.value;
 
