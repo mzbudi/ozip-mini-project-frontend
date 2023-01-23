@@ -20,6 +20,7 @@ const initialState = {
     total_stars: 0,
     total_rated: 0,
     description: "",
+    stock: 0,
   },
   status: "idle",
 };

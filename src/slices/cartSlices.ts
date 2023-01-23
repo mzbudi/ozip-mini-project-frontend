@@ -7,19 +7,11 @@ interface CartValue {
   color: string;
   qty: number;
   price: number;
-  name: string;
+  product_name: string;
 }
 
-interface CartState {
-  value: {
-    [key: string]: CartValue;
-  };
-
-  status: "idle" | "loading" | "failed";
-}
-
-const initialState: CartState = {
-  value: {},
+const initialState = {
+  value: [] as CartValue[],
   status: "idle",
 };
 
@@ -29,7 +21,17 @@ export const CartSlice = createSlice({
 
   reducers: {
     addCart: (state, action) => {
-      state.value[action.payload.id] = action.payload;
+      const index = state.value.findIndex(
+        (item) =>
+          item.id === action.payload.id &&
+          item.size === action.payload.size &&
+          item.color === action.payload.color
+      );
+      if (index !== -1) {
+        state.value[index].qty += action.payload.qty;
+      } else {
+        state.value.push(action.payload);
+      }
     },
   },
 });

@@ -20,7 +20,7 @@ const ProductDetail: React.FC = () => {
   const cart = useAppSelector(selectCart);
   const product = useAppSelector(selectProduct);
 
-  console.log(product);
+  // console.log(product);
   console.log(cart);
 
   useEffect(() => {
@@ -109,14 +109,14 @@ const ProductDetail: React.FC = () => {
     }
   };
 
-  const addToCart = () => {
+  const addToCart = (id: string, price: number, product_name: string) => {
     const newCartValue = {
-      id: Math.random().toString(36),
+      id: id,
       size: size,
       color: color,
       qty: qty,
-      price: 70000,
-      name: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+      price: price,
+      product_name: product_name,
     };
     dispatch(addCart(newCartValue));
   };
@@ -215,13 +215,13 @@ const ProductDetail: React.FC = () => {
               </div>
             </div>
             <p className="font-roboto font-normal text-2xl leading-[28.13px] mt-[10px]">
-              Stok Barang : 500
+              Stok Barang : {product.stock}
             </p>
           </div>
           {/* Cart */}
           <button
             onClick={() => {
-              addToCart();
+              addToCart(product._id, product.price, product.product_name);
             }}
             className="bg-primary font-roboto font-semibold text-[28px] text-center text-white mt-10 pt-[34px] pb-[33px]"
           >
