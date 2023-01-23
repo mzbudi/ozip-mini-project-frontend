@@ -1,14 +1,14 @@
 import axios from "axios";
 
 export function loginUser({
-  email,
+  username,
   password,
 }: {
-  email: string;
+  username: string;
   password: string;
 }) {
-  return axios.post("https://todo-api-18-140-52-65.rakamin.com/auth/login", {
-    email: email,
+  return axios.post("http://127.0.0.1:3001/auth/login", {
+    username: username,
     password: password,
   });
 }

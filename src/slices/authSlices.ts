@@ -3,15 +3,15 @@ import { loginUser, registerUser } from "./api/authApi";
 import { RootState } from "../app/store";
 
 const initialState = {
-  value: { auth_token: "", error: "", isLogged: false },
+  value: { access_token: "", error: "", isLogged: false },
   status: "idle",
 };
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ email, password }: { email: string; password: string }) => {
-    const response = await loginUser({ email, password });
-    localStorage.setItem("auth_token", response.data.auth_token);
+  async ({ username, password }: { username: string; password: string }) => {
+    const response = await loginUser({ username, password });
+    localStorage.setItem("access_token", response.data.access_token);
     return response.data;
   }
 );
@@ -25,7 +25,7 @@ export const register = createAsyncThunk(
     password_confirmation: string;
   }) => {
     const response = await registerUser(data);
-    localStorage.setItem("auth_token", response.data.auth_token);
+    localStorage.setItem("access_token", response.data.access_token);
     return response.data;
   }
 );
@@ -38,7 +38,7 @@ export const authSlice = createSlice({
       state.value = { ...state.value, error: "" };
     },
     resetAuth: (state) => {
-      state.value = { ...state.value, auth_token: "", error: "" };
+      state.value = { ...state.value, access_token: "", error: "" };
     },
   },
   extraReducers: (builder) => {
@@ -54,7 +54,7 @@ export const authSlice = createSlice({
         state.status = "err";
         state.value = {
           ...state.value,
-          auth_token: "",
+          access_token: "",
           error: "Invalid email or password",
         };
       })

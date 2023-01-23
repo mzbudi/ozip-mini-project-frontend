@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { addCart, selectCart } from "../../slices/cartSlices";
+import { getProductById, selectProduct } from "../../slices/productSlices";
 
 import Breadcrumb from "./components/Breadcrumb";
 import ImageCarousel from "./components/ImageCarousel";
@@ -10,18 +11,6 @@ import BreadcrumbOutlet from "./components/BreadcrumbOutlet";
 import { ReactComponent as Rating } from "../../assets/svg/rating.svg";
 import { ReactComponent as EmptyRating } from "../../assets/svg/empty-rating.svg";
 
-const sizeList: string[] = ["S", "M", "L", "XL", "XXL"];
-const colorList: string[] = ["#3C3A49", "#843535"];
-
-interface CartValue {
-  id: string;
-  size: string;
-  color: string;
-  qty: number;
-  price: number;
-  name: string;
-}
-
 const ProductDetail: React.FC = () => {
   const [qty, setQty] = useState<number>(0);
   const [size, setSize] = useState<string>("");
@@ -29,6 +18,14 @@ const ProductDetail: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const cart = useAppSelector(selectCart);
+  const product = useAppSelector(selectProduct);
+
+  console.log(product);
+  console.log(cart);
+
+  useEffect(() => {
+    dispatch(getProductById("63ca483eaf36cf599e86a2a3"));
+  }, [dispatch]);
 
   const ratingGenerator = (rating: number) => {
     const ratingArray = [];
@@ -61,6 +58,13 @@ const ProductDetail: React.FC = () => {
           </button>
         </div>
       );
+    });
+  };
+
+  const formatIdr = (price: number) => {
+    return price.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
     });
   };
 
@@ -106,7 +110,7 @@ const ProductDetail: React.FC = () => {
   };
 
   const addToCart = () => {
-    const newCartValue= {
+    const newCartValue = {
       id: Math.random().toString(36),
       size: size,
       color: color,
@@ -125,30 +129,29 @@ const ProductDetail: React.FC = () => {
         <div className="flex flex-col">
           {/* Title */}
           <p className="font-radio_canada font-semibold text-[40px] leading-10">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+            {product.product_name}
           </p>
           {/* Price and Ratings */}
           <div className="flex flex-row justify-between mt-5">
             <div>
               <p className="font-roboto font-bold text-3xl leading-[42.19px] text-price_inactive line-through">
-                Rp.70.000
+                {formatIdr(product.price)}
               </p>
               <p className="font-roboto font-bold text-[44px] leading-[51.64px] text-price">
-                Rp.70.000
+                {formatIdr(product.price)}
               </p>
             </div>
             <div className="flex items-center">
-              {ratingGenerator(3)}
-              <p className="font-roboto font-medium text-base ml-2">(65)</p>
+              {ratingGenerator(product.total_stars)}
+              <p className="font-roboto font-medium text-base ml-2">
+                ({product.total_rated})
+              </p>
             </div>
           </div>
           {/* Description */}
           <div className="mt-[26px] border-solid border-y-2 border-[#C9C9C9]">
             <p className="font-radio_canada font-normal text-xl leading-6 py-[22px] ">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Corrupti, beatae iusto, eos asperiores expedita placeat rem odio,
-              quos omnis aliquam accusantium quibusdam minima officiis a
-              consequatur hic excepturi ratione quod!
+              {product.description}
             </p>
           </div>
           {/* Size */}
@@ -157,7 +160,7 @@ const ProductDetail: React.FC = () => {
               Ukuran
             </p>
             <div className="flex flex-row mt-[10px]">
-              {sizeGenerator(sizeList)}
+              {sizeGenerator(product.variant)}
             </div>
           </div>
           {/* Color */}
@@ -166,7 +169,7 @@ const ProductDetail: React.FC = () => {
               Warna
             </p>
             <div className="flex flex-row mt-[10px]">
-              {colorGenerator(colorList)}
+              {colorGenerator(product.colors)}
             </div>
           </div>
           {/* Quantity */}
@@ -228,7 +231,7 @@ const ProductDetail: React.FC = () => {
           <SocialMediaList />
         </div>
       </div>
-      <BreadcrumbOutlet />
+      <BreadcrumbOutlet description={product.description} />
     </div>
   );
 };

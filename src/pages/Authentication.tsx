@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useNavigate } from "react-router-dom";
-import {
-  login,
-  register,
-  selectAuth,
-  closeErrorModal,
-} from "../slices/authSlices";
+import { login, selectAuth, closeErrorModal } from "../slices/authSlices";
 
 import Modal from "../components/Modal";
 
 const Authentication: React.FC = () => {
-  const [email, setUsername] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [registEmail, setRegistEmail] = useState("");
   const [registPassword, setRegistPassword] = useState("");
@@ -24,8 +19,6 @@ const Authentication: React.FC = () => {
   const dispatch = useAppDispatch();
   const auth = useAppSelector(selectAuth);
   const navigate = useNavigate();
-
-  console.log(auth);
 
   useEffect(() => {
     if (auth.error !== "") {
@@ -59,12 +52,12 @@ const Authentication: React.FC = () => {
   };
 
   const handleLogin = () => {
-    if (email === "" || password === "") {
+    if (username === "" || password === "") {
       setErrorType("Error Login");
       setErrorMessage("Please fill all the field");
       setIsOpen(true);
     }
-    dispatch(login({ email, password }));
+    dispatch(login({ username, password }));
   };
 
   const handleCloseModal = (status: boolean) => {
@@ -86,7 +79,7 @@ const Authentication: React.FC = () => {
           <input
             type="text"
             placeholder="Username"
-            value={email}
+            value={username}
             onChange={handleUsername}
             className="w-full border-2 border-[#E0E0E0] focus:outline-primary focus:caret-primary active:outline-borderPrimary rounded-lg px-4 py-2 mt-2 text-xs leading-5 opacity-50"
           />

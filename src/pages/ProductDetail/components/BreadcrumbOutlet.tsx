@@ -1,6 +1,10 @@
 import React from "react";
 
-const BreadcrumbOutlet = () => {
+interface BreadcrumbOutletProps {
+  description: string;
+}
+
+const BreadcrumbOutlet: React.FC<BreadcrumbOutletProps> = ({ description }) => {
   return (
     <>
       <div className="mt-[100px] flex justify-center">
@@ -38,10 +42,7 @@ const BreadcrumbOutlet = () => {
       </div>
       <div className="mt-10">
         <p className="font-roboto font-normal text-[28px] text-justify">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Adipisci
-          necessitatibus excepturi commodi amet aut quia dolor doloribus sunt
-          suscipit harum. Laudantium cumque iusto natus dolores sapiente labore
-          iste, molestias eaque.
+          {description}
         </p>
       </div>
     </>
