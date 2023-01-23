@@ -8,5 +8,5 @@ export function getProduct(id: string) {
     },
   };
 
-  return axios.get(`http://127.0.0.1:3001/product/${id}`, config);
+  return axios.get(`${process.env.REACT_APP_API_URL}product/${id}`, config);
 }

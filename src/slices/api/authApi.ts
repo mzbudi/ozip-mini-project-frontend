@@ -7,7 +7,7 @@ export function loginUser({
   username: string;
   password: string;
 }) {
-  return axios.post("http://127.0.0.1:3001/auth/login", {
+  return axios.post(`${process.env.REACT_APP_API_URL}auth/login`, {
     username: username,
     password: password,
   });
@@ -20,8 +20,7 @@ export function registerUser({
   username: string;
   password: string;
 }) {
-  console.log(username, password);
-  return axios.post("http://127.0.0.1:3001/users/signup", {
+  return axios.post(`${process.env.REACT_APP_API_URL}users/signup`, {
     username: username,
     password: password,
   });

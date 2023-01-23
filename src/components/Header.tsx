@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-
-// import cart state
 import { useAppSelector } from "../app/hooks";
 import { selectCart } from "../slices/cartSlices";
 

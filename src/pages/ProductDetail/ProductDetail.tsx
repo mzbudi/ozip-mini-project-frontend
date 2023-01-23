@@ -20,7 +20,6 @@ const ProductDetail: React.FC = () => {
   const cart = useAppSelector(selectCart);
   const product = useAppSelector(selectProduct);
 
-  // console.log(product);
   console.log(cart);
 
   useEffect(() => {
@@ -125,7 +124,7 @@ const ProductDetail: React.FC = () => {
     <div className="flex flex-col mx-[50px] my-10">
       <Breadcrumb />
       <div className="grid gap-16 grid-flow-col mt-[21.8px]">
-        <ImageCarousel />
+        <ImageCarousel photoUrl={product.photo} />
         <div className="flex flex-col">
           {/* Title */}
           <p className="font-radio_canada font-semibold text-[40px] leading-10">

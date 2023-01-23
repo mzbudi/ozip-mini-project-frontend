@@ -21,6 +21,7 @@ const initialState = {
     total_rated: 0,
     description: "",
     stock: 0,
+    photo: [],
   },
   status: "idle",
 };
