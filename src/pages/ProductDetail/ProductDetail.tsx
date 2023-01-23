@@ -7,6 +7,7 @@ import Breadcrumb from "./components/Breadcrumb";
 import ImageCarousel from "./components/ImageCarousel";
 import SocialMediaList from "./components/SocialMediaList";
 import BreadcrumbOutlet from "./components/BreadcrumbOutlet";
+import Modal from "../../components/Modal";
 
 import { ReactComponent as Rating } from "../../assets/svg/rating.svg";
 import { ReactComponent as EmptyRating } from "../../assets/svg/empty-rating.svg";
@@ -15,6 +16,7 @@ const ProductDetail: React.FC = () => {
   const [qty, setQty] = useState<number>(0);
   const [size, setSize] = useState<string>("");
   const [color, setColor] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const cart = useAppSelector(selectCart);
@@ -117,7 +119,12 @@ const ProductDetail: React.FC = () => {
       price: price,
       product_name: product_name,
     };
-    dispatch(addCart(newCartValue));
+
+    if (size === "" || color === "" || qty === 0) {
+      setIsOpen(true);
+    } else {
+      dispatch(addCart(newCartValue));
+    }
   };
 
   return (
@@ -231,6 +238,12 @@ const ProductDetail: React.FC = () => {
         </div>
       </div>
       <BreadcrumbOutlet description={product.description} />
+      <Modal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        errorType={"Cart Error"}
+        message={"Mohon Lengkapi Ukuran, Warna, dan Jumlah"}
+      />
     </div>
   );
 };
